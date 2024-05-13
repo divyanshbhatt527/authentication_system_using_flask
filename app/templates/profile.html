@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>User Profile</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="flash-messages">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+    {% if current_user.photo %}
+        {% if current_user.photo.startswith('http') %}
+            <img src="{{ current_user.photo }}" alt="User Photo" style="max-width: 100px;">
+        {% else %}
+            <img src="{{ url_for('static', filename='profile_photos/' + current_user.photo) }}" alt="User Photo" style="max-width: 100px;">
+        {% endif %}
+    {% endif %}
+    <div>
+        <a href="{{ url_for('routes.index') }}">Home</a>
+    </div>
+    <form action="{{ url_for('routes.get_profile') }}" method="POST" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        <label for="photo">Photo:</label>
+        <input type="file" id="photo" name="photo">
+        <br>
+        <label for="photo_url">Photo URL:</label>
+        <input type="url" id="photo_url" name="photo_url" placeholder="Enter image URL">
+        <br>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{ current_user.name }}">
+        <br>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{ current_user.username }}">
+        <br>
+        <label for="bio">Bio:</label>
+        <textarea id="bio" name="bio">{{ current_user.bio }}</textarea>
+        <br>
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" value="{{ current_user.phone }}">
+        <br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ current_user.email }}">
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+        <br>
+        <label for="visibility">Visibility:</label>
+        <select id="visibility" name="visibility">
+            <option value="public" {% if current_user.is_public %}selected{% endif %}>Public</option>
+            <option value="private" {% if not current_user.is_public %}selected{% endif %}>Private</option>
+        </select>
+        <br>
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

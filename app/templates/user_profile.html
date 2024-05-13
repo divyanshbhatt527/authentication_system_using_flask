@@ -1,0 +1,42 @@
+<!-- user_profile.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>User Profile</h1>
+    <a href="{{ url_for('routes.index') }}">Home</a>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="flash-messages">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    <div>
+        <h2>{{ user.username }}</h2>
+        <p>Email: {{ user.email }}</p>
+        <p>Name: {{ user.name }}</p>
+        {% if user.bio %}
+        <p>Bio: {{ user.bio }}</p>
+        {% endif %}
+        {% if user.phone %}
+        <p>Phone: {{ user.phone }}</p>
+        {% endif %}
+        {% if user.photo %}
+            {% if user.photo.startswith('http') %}
+                <img src="{{ user.photo }}" alt="User Photo" style="max-width: 100px;">
+            {% else %}
+                <img src="{{ url_for('static', filename='profile_photos/' + user.photo) }}" alt="User Photo" style="max-width: 100px;">
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>

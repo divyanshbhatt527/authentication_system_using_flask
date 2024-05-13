@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div>
+        <h1>Welcome to the Home Page</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="flash-messages">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('routes.logout') }}">Logout</a>
+        {% else %}
+            <p>Please log in.</p>
+            <a href="{{ url_for('routes.login') }}">Login</a>
+            <div>
+            <a href="{{ url_for('routes.register') }}">Sign Up!</a>
+            </div>
+        {% endif %}
+        
+
+    </div>
+    <div>
+        <a href="{{ url_for('routes.get_profile') }}">Profile</a>
+    </div>
+    <div>
+        <h2>User Profiles</h2>
+        <ul>
+            {% for user in users %}
+                <li>
+                    <a href="{{ url_for('routes.view_user_profile', username=user.username) }}">
+                        {{ user.username }}
+                    </a>
+                    {% if user.is_public %}
+                        (Public)
+                    {% else %}
+                        (Private)
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

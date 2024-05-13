@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <a href="{{ url_for('routes.index') }}">Home</a>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="flash-messages">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+    <h1>Login</h1>
+    <form action="{{ url_for('routes.login') }}" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username">
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+        <br>
+        <button type="submit">Login</button>
+    </form>
+    <hr>
+    <p>Or login with:</p>
+    <a href="{{ url_for('routes.login_google') }}">Google</a>
+    <!-- Add links/buttons for other OAuth providers -->
+    
+    <!-- Check if the user is not registered, then show the register button -->
+    <p>Not registered yet? <a href="{{ url_for('routes.register') }}">Register</a></p>
+</body>
+</html>
