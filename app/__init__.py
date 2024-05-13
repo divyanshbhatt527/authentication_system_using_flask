@@ -1,5 +1,3 @@
-print("Starting Flask application...")
-
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -7,7 +5,7 @@ from flask_oauthlib.client import OAuth
 app = Flask(__name__)
 
 app.config['DEBUG'] = True
-app.secret_key = '717d86f0a025f4cab9c01367c12ebc96'  # Set the generated secret key
+app.secret_key = '717d86f0a025f4cab9c01367c12ebc96'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:\\Users\\hp\\Desktop\\Authentication_system_flask\\instance\\app.db'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -41,14 +39,14 @@ google = oauth.remote_app(
 
 db = SQLAlchemy(app)
 
-# Register blueprints (routes)
+
 from .routes import bp
 app.register_blueprint(bp)
 
-# Import the User model after db is initialized
+
 from .models import User
 
-# Create the database tables
+
 with app.app_context():
     db.create_all()
 

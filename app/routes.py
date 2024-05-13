@@ -6,16 +6,15 @@ from flask_login import logout_user, current_user, login_required, login_user
 from werkzeug.utils import secure_filename
 from .forms import ProfileForm
 from .models import db, User, update_admin_user
-from . import app, google
+from . import  google
 
 bp = Blueprint('routes', __name__)
 
-# Function to generate a random password
 def generate_random_password():
     alphabet = string.ascii_letters + string.digits
-    return ''.join(secrets.choice(alphabet) for i in range(12))  # 12 characters long
+    return ''.join(secrets.choice(alphabet) for i in range(12)) 
 
-# Home page
+
 @bp.route('/')
 def index():
     update_admin_user()
@@ -25,7 +24,7 @@ def index():
     else:
         return render_template('index.html')
 
-# Login route
+
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -92,7 +91,7 @@ def authorized():
     flash('Logged in successfully!', 'success')
     return redirect(url_for('routes.index'))
 
-# Registration route
+
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -114,7 +113,7 @@ def register():
 
     return render_template('register.html')
 
-# Logout route
+
 @bp.route('/logout')
 @login_required
 def logout():
@@ -124,7 +123,7 @@ def logout():
     print(f'User logged out')
     return redirect(url_for('routes.index'))
 
-# View user profile route
+
 @bp.route('/user/<username>')
 @login_required
 def view_user_profile(username):
@@ -142,7 +141,7 @@ def view_user_profile(username):
 
 UPLOAD_FOLDER = 'app\static\profile_photos'
 
-# Update profile route
+
 @bp.route('/profile', methods=['GET', 'POST'])
 @login_required
 def get_profile():
